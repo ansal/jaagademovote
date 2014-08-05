@@ -1,0 +1,20 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "connect-mongo": "^0.4.1",
+    "express": "3.4.8",
+    "express-restify-mongoose": "^0.6.8",
+    "jade": "*",
+    "mongoose": "^3.8.13",
+    "nodemon": "^1.2.1",
+    "passport": "^0.2.0",
+    "passport-facebook": "^1.0.3",
+    "passport-google-oauth": "^0.1.5",
+    "passport-twitter": "^1.0.2"
+  }
+}

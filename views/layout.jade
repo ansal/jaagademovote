@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Welcome!
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+  body
+
+    // navigation bar
+    nav.navbar.navbar-default(role="navigation")
+      div.container-fluid
+        div.navbar-header
+          button.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbar-collapse-links-1")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href="/") Your App Name!
+
+    // app body
+    div.container-fluid
+
+      block content
+
+      div.row
+        div.col-md-12
+          hr
+          p.pull-right This project is hosted on github at 
+            a(href="https://github.com/ansal/node-express-mongoose-boilerplate") https://github.com/ansal/node-express-mongoose-boilerplate.
+
+    // js libs
+    script(src="/js/lib/jquery.min.js")
+    script(src="/js/lib/bootstrap.min.js")
+    script(src="/js/lib/underscore.min.js")
+    script(src="/js/lib/backbone.min.js")
+
+    // backbone app
+    script(src="/js/models.js")
+    script(src="/js/collections.js")
+    script(src="/js/views.js")
+    script(src="/js/routes.js")
+    script(src="/js/app.js")
