@@ -14,6 +14,7 @@ var config = require('./config.js');
 var authentication = require('./auth.js');
 var urls = require('./urls.js');
 var userApi = require('./api/user.js');
+var deliverableApi = require('./api/deliverables.js');
 
 var app = express();
 
@@ -57,6 +58,7 @@ urls(app, passport);
 
 // Restful APIs
 userApi(app, config);
+deliverableApi(app, config);
 
 // 404 handler
 app.use(function(req, res, next){

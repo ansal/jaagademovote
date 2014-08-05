@@ -6,6 +6,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 
 var User = require('./models/user.js');
+var AllowedUser = require('./models/user.js').AllowedUser;
 
 module.exports = function(passport, config) {
 
@@ -30,24 +31,44 @@ module.exports = function(passport, config) {
     ]
   },
     function(accessToken, refreshToken, profile, done) {
-      User.findOne({'google.id': profile.id}, function(err, user){
-        if(err) { console.log(err); }
-        // create a new user account if she doesnot exist
-        if(!user) {
-          var user = new User({
-            name: profile.displayName,
-            email: profile.emails[0].value,
-            username: profile.username,
-            provider: 'google',
-            google: profile._json
-          });
-          user.save(function(err){
-            if(err) { console.log(err); }
-            return done(err, user);
-          });
-        } else {
-          return done(err, user);
+      
+      var profileEmail = profile.emails[0].value;
+
+      // check whether the user is allowed to login or not
+      AllowedUser.findOne({'email': profileEmail}, function(err, validUser){
+        if(err) {
+          console.log(err);
+          done(err, null);
+          return;
         }
+        
+        // check if user is in valid list
+        // if it fails check for admin too
+        if(!validUser && config.admins.indexOf(profileEmail) === -1) {
+          done(null, null);
+          return;
+        }
+
+        User.findOne({'google.id': profile.id}, function(err, user){
+          if(err) { console.log(err); }
+          // create a new user account if she doesnot exist
+          if(!user) {
+            var user = new User({
+              name: profile.displayName,
+              email: profile.emails[0].value,
+              username: profile.username,
+              provider: 'google',
+              google: profile._json
+            });
+            user.save(function(err){
+              if(err) { console.log(err); }
+              return done(err, user);
+            });
+          } else {
+            return done(err, user);
+          }
+        });
+
       });
     }
   ));

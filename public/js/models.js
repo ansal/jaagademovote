@@ -21,4 +21,13 @@ var JaagaDemoVote = JaagaDemoVote || {};
     idAttribute: '_id'
   });
 
+  // User created deliverables
+  J.Models.Deliverable = Backbone.Model.extend({
+    defaults: {
+      title: 'Untitled Deliverable',
+      description: 'No description given'
+    },
+    idAttribute: '_id'
+  });
+
 })();

@@ -2,7 +2,7 @@ extends layout
 
 block navLinks
   li
-    a(href="#/app")
+    a(href="#/app/dashboard")
       span.glyphicon.glyphicon-home
       |  Dashboard
 
@@ -29,6 +29,8 @@ block content
       h5 Loading...
 
 block templates
+  // templates related to admin only
+
   script#adminUsersTemplate(type="text/template")
     h2 Users
     hr
@@ -71,6 +73,76 @@ block templates
     a.btn.btn-lg.btn-danger#removeUserButton
       span.glyphicon.glyphicon-remove
       |  Remove this user
+
+  // templates for all users
+  script#userDashboardTemplate(type="text/template")
+    div.col-md-12
+      h2 Your Upcoming Deliverables
+      hr
+      div.alert.alert-info(style!="<%= deliverables.length === 0 ? 'display:block' : 'display:none' %>")
+        strong Oh! Oh! 
+        | You dont have any deliverables upcoming! Why dont you create one?
+      div.col-md-12
+        a.pull-right.btn.btn-lg.btn-success(href="#/app/deliverables/add")
+          span.glyphicon.glyphicon-plus
+          |  Deliverable
+      div.col-md-12
+        <% _.each(deliverables, function(deliverable, index){ %>
+        a(href!="#/app/user/deliverable/view/<%= typeof deliverable.get('_id') === 'undefined' ? deliverable.get('cid') : deliverable.get('_id') %>")
+          h3<%= index + 1 %>. <%= deliverable.get('title') %>
+        hr
+        p <%= deliverable.get('description').slice(0, 250) %>
+          | <%= deliverable.get('description').length > 250 ? '...' : '' %>
+        <%  }) %>
+    div.col-md-12
+      h2 Jaaga Family
+      hr
+
+  script#userAddDeliverableTemplate(type="text/template")
+    h2 Add a Deliverable
+    hr
+    div.alert.alert-info
+      | Its time to show the world what you can do!
+    div#validationError.alert.alert-danger(style="display:none")
+      strong Oh! Oh!:  
+      | I need a title and description!
+    div.form-group
+      label(for="deliverableTitle") Title
+      input.form-control#deliverableTitle(type=text, placeholder="Enter title for your deliverable!")
+    div.form-group
+      label(for="deliverableDescription") Description
+      textarea.form-control#deliverableDescription(rows="5", placeholder="Enter a short description for your deliverable!")
+    a.btn.btn-default(href="#/app/admin/users") Cancel &amp; Take me Back!
+    span  
+    button.btn.btn-success#newDeliverableSaveButton(type="button")
+      span.glyphicon.glyphicon-plus
+      |  Create
+
+  script#userEditDeliverableTemplate(type="text/template")
+    h2 Editing "<%= deliverable.get('title') %>"
+    hr
+    small.pull-right
+      a.text-muted(href="#/app/dashboard") Back to Dashboard
+    div#validationError.alert.alert-danger(style="display:none")
+      strong Oh! Oh!:  
+      | I need a title and description!
+    div.form-group
+      label(for="deliverableTitle") Title
+      input.form-control#deliverableTitle(type=text, placeholder="Enter title for your deliverable!", value!="<%= deliverable.get('title') %>")
+    div.form-group
+      label(for="deliverableDescription") Description
+      textarea.form-control#deliverableDescription(rows="5", placeholder="Enter a short description for your deliverable!")
+        | <%= deliverable.get('description') %>
+    a.btn.btn-default(href="#/app/dashboard") Back to Dashboard
+    span  
+    button.btn.btn-success#deliverableUpdateButton(type="button")
+      span.glyphicon.glyphicon-ok
+      |  Update
+    span  
+    a.btn.btn-danger#deliverableDeleteButton
+      span.glyphicon.glyphicon-remove
+      |  Remove this sucker
+
 
 block appscripts
   script(src="/js/models.js")

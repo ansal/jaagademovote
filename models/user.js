@@ -21,6 +21,7 @@ var UserSchema = new Schema({
 var AllowedUserSchema = new Schema({
   email: String
 });
- 
+
+module.exports.UserSchema = UserSchema; 
 module.exports = mongoose.model('User', UserSchema);
 module.exports.AllowedUser = mongoose.model('AllowedUser', AllowedUserSchema);
