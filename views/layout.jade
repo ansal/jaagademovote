@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title Welcome!
+    title Jaaga DemoVote
     link(rel='stylesheet', href='/css/bootstrap.min.css')
   body
 
@@ -14,7 +14,11 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href="/") Jaaga Demo Vote
+          a.navbar-brand(href="/") Jaaga DemoVote
+
+        div.collapse.navbar-collapse#navbar-collapse-links-1
+          ul.nav.navbar-nav.navbar-right
+            block navLinks
 
     // app body
     div.container-fluid
@@ -27,6 +31,9 @@ html
           p.pull-right Grab source over here - 
             a(href="https://github.com/ansal/jaagademovote") https://github.com/ansal/jaagademovote.
 
+    // templates
+    block templates
+
     // js libs
     script(src="/js/lib/jquery.min.js")
     script(src="/js/lib/bootstrap.min.js")
@@ -34,8 +41,4 @@ html
     script(src="/js/lib/backbone.min.js")
 
     // backbone app
-    script(src="/js/models.js")
-    script(src="/js/collections.js")
-    script(src="/js/views.js")
-    script(src="/js/routes.js")
-    script(src="/js/app.js")
+    block appscripts

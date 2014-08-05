@@ -1,10 +1,73 @@
 extends layout
 
+block navLinks
+  li
+    a(href="#/app")
+      span.glyphicon.glyphicon-home
+      |  Dashboard
+
+  li
+    a(href="#/app/admin/users")
+      span.glyphicon.glyphicon-user
+      |  User Management
+
+  li
+    a(href="/logout")
+      span.glyphicon.glyphicon-log-out
+      |  Logout
+
 block content
-  div.row
+  div.row#appContainer
     div.col-md-12
-      h3
-        | Welcome 
-        = user.name
-        |!
-      a.btn.btn-primary(href="/logout") Logout Now!      
+      h5 Loading...
+
+block templates
+  script#adminUsersTemplate(type="text/template")
+    h2 Users
+    hr
+    div.alert.alert-info#adminUsersNoUsers(style!="<%= users.length === 0 ? 'display:block' : 'display:none' %>")
+      strong Oh! Oh! 
+      | There are no users. Why don't add one by clicking the above button?
+    div.row
+      div.col-md-12
+        a.pull-right.btn.btn-lg.btn-success(href="#/app/admin/users/add")
+          span.glyphicon.glyphicon-plus
+          |  User
+    div.row
+      div.col-md-12
+        <% _.each(users, function(user, index){ %>
+        a(href!="#/app/admin/users/view/<%= typeof user.get('_id') === 'undefined' ? user.get('cid') : user.get('_id') %>")
+          h3<%= index + 1 %>. <%= user.get('email') %>
+        <%  }) %>
+
+  script#adminUserAddTemplate(type="text/template")
+    h2 Add New User
+    hr
+    div.alert.alert-info
+      strong Hey there!:  
+      | Be careful with the email address. Double check before adding!
+    div#emailVaildationError.alert.alert-danger(style="display:none")
+      strong Oh! Oh!:  
+      | Did you forget something?
+    div.form-group
+      label(for="newUserEmail") Email
+      input.form-control#newUserEmail(type=email, placeholder="Email address of user")
+    a.btn.btn-default(href="#/app/admin/users") Cancel &amp; Take me Back!
+    span  
+    button.btn.btn-success#newUserEmailSaveButton(type="button")
+      span.glyphicon.glyphicon-plus
+      | Add
+
+  script#adminUserTemplate(type="text/template")
+    h2 <%= user.get('email') %>
+    hr
+    a.btn.btn-lg.btn-danger#removeUserButton
+      span.glyphicon.glyphicon-remove
+      |  Remove this user
+
+block appscripts
+  script(src="/js/models.js")
+  script(src="/js/collections.js")
+  script(src="/js/views.js")
+  script(src="/js/routes.js")
+  script(src="/js/app.js")
