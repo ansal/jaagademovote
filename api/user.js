@@ -10,9 +10,12 @@ module.exports = function(app, config) {
 
     // only admin is allowed for all type of requests except GET
     prereq: function(req) {
-      console.log('\n\nprereq called!!!\n\n')
       if(req.isAuthenticated()) {
-        return true;
+        if(config.admins && config.admins.indexOf(req.user.email) !== -1) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -21,7 +24,13 @@ module.exports = function(app, config) {
     contextFilter: function(model, req, callback) {
 
       if(req.user) {
-        callback(model);
+        if(config.admins && config.admins.indexOf(req.user.email) !== -1) {
+          callback(model);
+        } else {
+          callback(model.find({
+            isPublic: true
+          }));
+        }
       } else {
         callback(model.find({
           isPublic: true

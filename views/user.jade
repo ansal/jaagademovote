@@ -6,10 +6,11 @@ block navLinks
       span.glyphicon.glyphicon-home
       |  Dashboard
 
-  li
-    a(href="#/app/admin/users")
-      span.glyphicon.glyphicon-user
-      |  User Management
+  if user.isAdmin
+    li
+      a(href="#/app/admin/users")
+        span.glyphicon.glyphicon-user
+        |  User Management
 
   li
     a(href="/logout")
@@ -17,6 +18,12 @@ block navLinks
       |  Logout
 
 block content
+  div.row
+    div.col-md-12
+      span.pull-right Howdy 
+        = user.name
+        |! 
+        //img.img-circle(src=user.google.picture + "?sz=30")
   div.row#appContainer
     div.col-md-12
       h5 Loading...
@@ -71,3 +78,9 @@ block appscripts
   script(src="/js/views.js")
   script(src="/js/routes.js")
   script(src="/js/app.js")
+
+  // inline scripts for bootstrapping models
+  script
+    | JaagaDemoVote.User = 
+    != userInfo
+    |;

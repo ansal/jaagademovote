@@ -1,4 +1,5 @@
-// A sample express route module
+// Express routes
+var config = require('../config.js');
 
 exports.index = function(req, res){
   
@@ -7,8 +8,17 @@ exports.index = function(req, res){
     return;
   }
 
+  if( config.admins.indexOf(req.user.email) !== -1 ) {
+    req.user.isAdmin = true;
+  } else {
+    req.user.isAdmin = false;
+  }
+
   // user is logged in
-  res.render('user', {user: req.user});
+  res.render('user', {
+    user: req.user,
+    userInfo: JSON.stringify(req.user)
+  });
 
 };
 
