@@ -4,6 +4,8 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var request = require('request');
+var googleIdToken = require('google-id-token');
 
 var User = require('./models/user.js');
 var AllowedUser = require('./models/user.js').AllowedUser;
@@ -133,3 +135,19 @@ module.exports = function(passport, config) {
   ));
 
 };
+
+// authentication for android phones
+module.exports.getGoogleCerts = function(keyId, callback) {
+  request({
+    uri: 'https://www.googleapis.com/oauth2/v1/certs'
+    }, function(err, response, body) {
+      if(err && response.statusCode !== 200) {
+          err = err || "error while retrieving the google certs";
+          console.log(err);
+          callback(err, {})
+      } else {
+        var keys = JSON.parse(body);
+        callback(null, keys[keyId]);
+      }
+  });
+}

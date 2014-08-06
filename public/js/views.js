@@ -257,6 +257,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     // open voting. only for admins
     openVoting: function(e) {
       e.preventDefault();
+      $(e.target).attr('disabled', true);
       this.model.set('votingopen', true);
       this.model.save({
         'votingopen': true
@@ -270,6 +271,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     // close voting. only for admins
     closeVoting: function(e) {
       e.preventDefault();
+      $(e.target).attr('disabled', true);
       this.model.set('votingopen', false);
       this.model.save({
         'votingopen': false
@@ -283,6 +285,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     // mark deliverable as completed. only for admins
     completeDeliverable: function(e) {
       e.preventDefault();
+      $(e.target).attr('disabled', true);
       this.model.set('delivered', true);
       this.model.save({
         'delivered': true
@@ -296,6 +299,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     // voting available for all users
     voteUp: function(e) {
       e.preventDefault();
+      $(e.target).attr('disabled', true);
       J.Collections.UserVotes.create({
         deliverable: this.model.get('_id'),
         vote: true,
@@ -309,6 +313,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
 
     voteDown: function(e) {
       e.preventDefault();
+      $(e.target).attr('disabled', true);
       J.Collections.UserVotes.create({
         deliverable: this.model.get('_id'),
         vote: false,

@@ -2,6 +2,7 @@
 
 var pages = require('./routes/pages.js');
 var config = require('./config.js');
+var authAndroid = require('./api/android.js').authAndroid;
 
 module.exports = function(app, passport) {
 
@@ -32,6 +33,8 @@ module.exports = function(app, passport) {
       failureRedirect: '/?loginError=true'
     })
   );
+  // authorization for android
+  app.post('/api/android/authorize', authAndroid);
 
   // app specific urls
   app.get('/', pages.index);
