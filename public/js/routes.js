@@ -25,7 +25,9 @@ var JaagaDemoVote = JaagaDemoVote || {};
       // urls for all users
       'app/dashboard': 'dashboard',
       'app/deliverables/add': 'userAddDeliverable',
-      'app/user/deliverable/view/:id': 'userEditDeliverable'
+      'app/user/deliverable/view/:id': 'userEditDeliverable',
+      'app/user/family/view/:id': 'memberView',
+      'app/user/family/deliverable/view/:id': 'memberDeliverableView'
 
     },
 
@@ -85,8 +87,18 @@ var JaagaDemoVote = JaagaDemoVote || {};
       // the backend.
       J.Collections.Deliverables.fetch({
         success: function() {
-          J.AppState.currentView = new J.Views.UserDashboardView;
-          $container.html( J.AppState.currentView.render().$el );
+          // Since dashboard also shows family members,
+          // we have to show them too
+          J.Collections.Family.fetch({
+            success: function() {
+              J.AppState.currentView = new J.Views.UserDashboardView;
+              $container.html( J.AppState.currentView.render().$el );
+            },
+            error: function() {
+              alert('Failed to load data. Please see log for details');
+              console.log(err);
+            }
+          });
         },
         error: function(err) {
           alert('Failed to load data. Please see log for details');
@@ -124,6 +136,56 @@ var JaagaDemoVote = JaagaDemoVote || {};
         });
       } else {
         J.AppState.currentView = new J.Views.UserEditDeliverableView( {model: deliverable} );
+        $container.html( J.AppState.currentView.render().$el );
+      }
+    },
+
+    memberView: function(id) {
+      if(J.AppState.currentView) {
+        J.AppState.currentView.remove();
+      }
+      var member = J.Collections.Family.get(id);
+      // check whether we get a model or not
+      // if not, it might be because collection has not been fetched yet
+      if(!member) {
+        J.Collections.Family.fetch({
+          success: function() {
+            var member = J.Collections.Family.get(id);
+            J.AppState.currentView = new J.Views.MemberView( {model: member} );
+            $container.html( J.AppState.currentView.render().$el );
+          },
+          error: function(err) {
+            alert('Failed to load data. Please see log for details');
+            console.log(err);
+          }
+        });
+      } else {
+        J.AppState.currentView = new J.Views.MemberView( {model: member} );
+        $container.html( J.AppState.currentView.render().$el );
+      }
+    },
+
+    memberDeliverableView: function(id) {
+      if(J.AppState.currentView) {
+        J.AppState.currentView.remove();
+      }
+      var deliverable = J.Collections.Deliverables.get(id);
+      // check whether we get a model or not
+      // if not, it might be because collection has not been fetched yet
+      if(!deliverable) {
+        J.Collections.Deliverables.fetch({
+          success: function() {
+            var deliverable = J.Collections.Deliverables.get(id);
+            J.AppState.currentView = new J.Views.MemberDeliverableView( {model: deliverable} );
+            $container.html( J.AppState.currentView.render().$el );
+          },
+          error: function(err) {
+            alert('Failed to load data. Please see log for details');
+            console.log(err);
+          }
+        });
+      } else {
+        J.AppState.currentView = new J.Views.MemberDeliverableView( {model: deliverable} );
         $container.html( J.AppState.currentView.render().$el );
       }
     }

@@ -12,8 +12,12 @@ var UserSchema = new Schema({
   provider: String,
   google: {},
   facebook: {},
-  twitter: {}
-    
+  twitter: {},
+  // reverse reference to deliverables
+  // saved through post save signal callback
+  deliverables: [
+    { type: ObjectId, ref: 'Deliverable' }
+  ]
 });
 
 // List of users allowed to login and vote

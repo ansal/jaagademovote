@@ -110,7 +110,8 @@ var JaagaDemoVote = JaagaDemoVote || {};
 
     render: function() {
       var html = this.template({
-        deliverables: J.Collections.Deliverables.ownDeliverables()
+        deliverables: J.Collections.Deliverables.ownDeliverables(),
+        members: J.Collections.Family.getMembersWithoutMe()
       });
       this.$el.html(html);
       return this;
@@ -205,6 +206,40 @@ var JaagaDemoVote = JaagaDemoVote || {};
       }
       this.model.destroy();
       window.location.href = '#/app/dashboard';
+    }
+
+  });
+
+  // Individual family member view
+  J.Views.MemberView = Backbone.View.extend({
+
+    tagName: 'div',
+    className: 'col-md-offset-2 col-md-8',
+    template: _.template( $('#memberView').html() ),
+
+    render: function() {
+      var html = this.template({
+        member: this.model
+      });
+      this.$el.html(html);
+      return this;
+    }
+
+  });
+
+  // Member deliverable view for other users
+  J.Views.MemberDeliverableView = Backbone.View.extend({
+
+    tagName: 'div',
+    className: 'col-md-offset-2 col-md-8',
+    template: _.template( $('#memberDeliverableView').html() ),
+
+    render: function() {
+      var html = this.template({
+        deliverable: this.model
+      });
+      this.$el.html(html);
+      return this;
     }
 
   });

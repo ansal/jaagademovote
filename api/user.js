@@ -1,6 +1,6 @@
 // RESTful api for user model
 
-var restify = require('express-restify-mongoose');
+var restify = require('./express-restify-mongoose.js');
 var AllowedUser = require('../models/user.js').AllowedUser;
 
 // this function should be called in app.js as userRestify(app, config)

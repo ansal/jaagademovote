@@ -90,13 +90,22 @@ block templates
         <% _.each(deliverables, function(deliverable, index){ %>
         a(href!="#/app/user/deliverable/view/<%= typeof deliverable.get('_id') === 'undefined' ? deliverable.get('cid') : deliverable.get('_id') %>")
           h3<%= index + 1 %>. <%= deliverable.get('title') %>
-        hr
-        p <%= deliverable.get('description').slice(0, 250) %>
-          | <%= deliverable.get('description').length > 250 ? '...' : '' %>
         <%  }) %>
+        hr
     div.col-md-12
       h2 Jaaga Family
       hr
+      div.alert.alert-info(style!="<%= members.length === 0 ? 'display:block' : 'display:none' %>")
+        strong Oh! Oh! 
+        | Looks like there is no one in Jaaga right now!
+      div.col-md-12
+        <% _.each(members, function(member, index){ %>
+        a(href!="#/app/user/family/view/<%= typeof member.get('_id') === 'undefined' ? member.get('cid') : member.get('_id') %>")
+          h3<%= index + 1 %>. <%= member.get('name') %>
+        small
+          <%= member.get('deliverables').length %> Deliverable<%= member.get('deliverables').length === 1 ? '' : 's' %>, <%= JaagaDemoVote.Collections.Family.getMemberDeliverableCount(member.get('_id')) %> Delivered.
+        hr
+        <%  }) %>      
 
   script#userAddDeliverableTemplate(type="text/template")
     h2 Add a Deliverable
@@ -142,6 +151,67 @@ block templates
     a.btn.btn-danger#deliverableDeleteButton
       span.glyphicon.glyphicon-remove
       |  Remove this sucker
+
+  script#memberView(type="text/template")
+    h2 <%= member.get('name') %>
+    hr
+    div.col-md-offset-1.col-md-9
+      h3 Upcoming Deliverables
+      hr
+      div.alert.alert-info(style!="<%= member.getUpcomingDeliverableCount() === 0 ? 'display:block' : 'display:none' %>")
+        strong Hmmm! 
+        | I don't have any upcoming deliverables! But keep checking this page!
+      <% _.each(member.getUpcomingDeliverables(), function(d, index){ %>
+      a(href!="#/app/user/family/deliverable/view/<%= d._id %>")
+        h4 <%= index + 1 %>. <%= d.title %>
+      <%  }); %>
+
+    div.col-md-offset-1.col-md-9
+      h3 Completed Deliverables
+      hr
+      div.alert.alert-info(style!="<%= member.getCompletedDeliverableCount() === 0 ? 'display:block' : 'display:none' %>")
+        strong Hmmm! 
+        | I don't have completed any deliverables yet. But keep checking this page!
+
+  script#memberDeliverableView(type="text/template")
+    h2 <%= deliverable.get('title') %>
+      br
+      small
+        span.text-muted
+          <%= deliverable.get('delivered') === true ? 'I have delivered the project on ,' : 'I haven\'t delivered the project yet, ' %>
+          <%= deliverable.get('user').name %>
+    hr
+    p
+    div.col-md-offset-2.col-md-8
+      div.col-md-8
+        blockquote <%= deliverable.get('description') %>.
+      div.col-md-6
+        h1.text-success 12
+        small People liked this Deliverable!
+      div.col-md-6
+        h1.text-danger 12
+        small People hated this Deliverable :(
+      div.col-md-12#deliverableVotingArea
+        hr
+        div.alert.alert-success#voteAlert
+          strong Hey there!
+          | Voting is going on for this deliverable. Please cast your vote and show your love!
+        div.alert.alert-success#voteLikedAlert
+          span.glyphicon.glyphicon-thumbs-up
+          |  You liked this deliverable!
+        div.alert.alert-danger#voteHatedAlert
+          span.glyphicon.glyphicon-thumbs-down
+          |  You hated this deliverable!
+        h4 Cast your Vote!
+        hr
+        div.col-md-6
+          a(href="#").btn.btn-lg.btn-success
+            span.glyphicon.glyphicon-thumbs-up
+            |  Like It!
+        div.col-md-6
+          a(href="#").btn.btn-lg.btn-danger
+            span.glyphicon.glyphicon-thumbs-down
+            |  Hate It!
 
 
 block appscripts

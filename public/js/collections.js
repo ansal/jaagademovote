@@ -46,4 +46,32 @@ var JaagaDemoVote = JaagaDemoVote || {};
   });
   J.Collections.Deliverables= new Deliverables;
 
+  // Collection for holding all family members
+  var Family = Backbone.Collection.extend({
+    model: J.Models.FamilyMember,
+    url: '/api/v1/family',
+
+    // get all the family members without the user
+    getMembersWithoutMe: function() {
+      return this.filter(function(member){
+        return member.get('_id') === J.User._id ? false: true;
+      });
+    },
+
+    getMemberDeliverableCount: function(id) {
+      if(!id) {
+        throw new Error('getMemberDeliverableCount needs a member id');
+      }
+      var member = J.Collections.Family.get(id);
+      if(!member) {
+        return null;
+      }
+      return _.reduce(member.get('deliverables'), function(sum, d){
+        var delivered = d.delivered === true ? 1 : 0;
+        return sum + delivered;
+      }, 0);
+    }
+  });
+  J.Collections.Family = new Family;
+
 })();

@@ -30,4 +30,43 @@ var JaagaDemoVote = JaagaDemoVote || {};
     idAttribute: '_id'
   });
 
+  // Family Member model
+  // This holds all user info added by the user
+  // There is no way to add, update and delete this -
+  // even for admin
+  J.Models.FamilyMember = Backbone.Model.extend({
+    idAttribute: '_id',
+
+    // returns number of completed deliverables
+    getCompletedDeliverableCount: function() {
+      return _.reduce(this.get('deliverables'), function(sum, d){
+        var delivered = d.delivered === true ? 1 : 0;
+        return sum + delivered;
+      }, 0);
+    },
+
+    // returns number of upcoming deliverables
+    getUpcomingDeliverableCount: function() {
+      return _.reduce(this.get('deliverables'), function(sum, d){
+        var delivered = d.delivered === false ? 1 : 0;
+        return sum + delivered;
+      }, 0);
+    },
+
+    // returns all completed deliverables
+    getCompletedDeliverables: function() {
+      return _.filter(this.get('deliverables'), function(d){
+        return d.delivered;
+      });
+    },
+
+    // returns all upcoming deliverables
+    getUpcomingDeliverables: function() {
+      return _.filter(this.get('deliverables'), function(d){
+        return !d.delivered;
+      });
+    }
+
+  });
+
 })();
