@@ -25,7 +25,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   // useful to populate user data inside deliverables
   function deliverablesSetUrls(method, model, options) {
     if(method === 'read') {
-      options.url = '/api/v1/deliverables?populate=user';
+      options.url = '/api/v1/deliverables?populate=user,votes';
     } else {
       options.url = '/api/v1/deliverables';
     }
@@ -73,5 +73,14 @@ var JaagaDemoVote = JaagaDemoVote || {};
     }
   });
   J.Collections.Family = new Family;
+
+  // Collection representing a UserVote
+  // Dont try to fetch this as it will load
+  // tons of data!
+  var UserVotes = Backbone.Collection.extend({
+    model: J.Models.UserVote,
+    url: '/api/v1/votes'
+  });
+  J.Collections.UserVotes = new UserVotes;
 
 })();

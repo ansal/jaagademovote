@@ -14,10 +14,23 @@ exports.index = function(req, res){
     req.user.isAdmin = false;
   }
 
+  // This fix isAdmin missing in client side
+  // TODO: This is a lame solution
+  // Find a clean solution
+  var userInfo = req.user;
+  userInfo = JSON.stringify(userInfo);
+  userInfo = JSON.parse(userInfo);
+  if(req.user.isAdmin) {
+    userInfo.isAdmin = true;
+  } else {
+    userInfo.isAdmin = false;
+  }
+  userInfo = JSON.stringify(userInfo);
+
   // user is logged in
   res.render('user', {
     user: req.user,
-    userInfo: JSON.stringify(req.user)
+    userInfo: userInfo
   });
 
 };

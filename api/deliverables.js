@@ -14,7 +14,6 @@ module.exports = function(app, config) {
 
         // post request
         if(req.route.method === 'post') {
-          console.log('post called')
           // append user information
           req.body.user = req.user;
           // when creating for the first time, all are undelivered
@@ -26,7 +25,6 @@ module.exports = function(app, config) {
         // put and delete needs to be checked if the request 
         // is coming from the owner of the document
         if(req.route.method === 'put' || req.route.method === 'delete') {
-          console.log('put or delete called');
           Deliverable.findOne({
             'user': req.user._id,
             _id: req.params.id
@@ -35,6 +33,12 @@ module.exports = function(app, config) {
             if(err) {
               console.log(err);
               callback(false);
+              return;
+            }
+
+            // check whether the user is an admin trying to open/close the voting
+            if(config.admins.indexOf(req.user.email) !== -1) {
+              callback(true);
               return;
             }
 
@@ -47,6 +51,8 @@ module.exports = function(app, config) {
             // if its a put method, update user as a last check
             if(req.route.method === 'put') {
               req.body.user = req.user;
+              // user has no right to mark project as completed
+              req.body.delivered = false;
             }
             callback(true);
             return;

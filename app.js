@@ -16,6 +16,7 @@ var urls = require('./urls.js');
 var userApi = require('./api/user.js');
 var deliverableApi = require('./api/deliverables.js');
 var family = require('./api/family.js');
+var vote = require('./api/votes.js');
 
 var app = express();
 
@@ -61,6 +62,8 @@ urls(app, passport);
 userApi(app, config);
 deliverableApi(app, config);
 family(app, config);
+family(app, config);
+vote(app, config);
 
 // 404 handler
 app.use(function(req, res, next){

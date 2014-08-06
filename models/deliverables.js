@@ -12,9 +12,13 @@ var DeliverableSchema = new Schema({
   title: String,
   description: String,
   delivered: { type: Boolean, default: false},
-  date: { type: Date, default: Date.now }
+  votingopen: { type: Boolean, default: false},
+  votes: [{ type: ObjectId, ref: 'Vote' }],
+  date: { type: Date, default: Date.now },
+  delivereddate: Date
 });
-module.exports.Deliverable = mongoose.model('Deliverable', DeliverableSchema);
+var Deliverable = mongoose.model('Deliverable', DeliverableSchema);
+module.exports.Deliverable = Deliverable;
 
 // post save signal to save a reference in user model
 DeliverableSchema.post('save', function (deliverable) {
@@ -32,6 +36,41 @@ DeliverableSchema.post('save', function (deliverable) {
     if(user.deliverables.indexOf(deliverable._id) === -1) {
       user.deliverables.push(deliverable._id);
       user.save(function(err){
+        if(err) {
+          console.log(err);
+          return;
+        }
+      });
+    }
+  });
+})
+
+// A vote casted by the user
+var VoteSchema = new Schema({
+  user: { type: ObjectId, ref: 'User' },
+  deliverable: { type: ObjectId, ref: 'Deliverable' },
+  vote: Boolean,
+  date: { type: Date, default: Date.now }
+});
+module.exports.Vote = mongoose.model('Vote', VoteSchema);
+
+// post save signal to save a reference in deliverable model
+VoteSchema.post('save', function (vote) {
+  Deliverable.findOne({
+    _id: vote.deliverable
+  }, function(err, deliverable){
+    if(err) {
+      console.log(err);
+      return;
+    }
+    if(!deliverable) {
+      // TODO: Should the deliverable be deleted in case deliverable is not found?
+      return;
+    }
+    // save only if user hasn't voted already
+    if(deliverable.votes.indexOf(vote._id) === -1) {
+      deliverable.votes.push(vote._id);
+      deliverable.save(function(err){
         if(err) {
           console.log(err);
           return;

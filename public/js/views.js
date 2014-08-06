@@ -111,7 +111,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     render: function() {
       var html = this.template({
         deliverables: J.Collections.Deliverables.ownDeliverables(),
-        members: J.Collections.Family.getMembersWithoutMe()
+        members: J.Collections.Family.models
       });
       this.$el.html(html);
       return this;
@@ -234,13 +234,91 @@ var JaagaDemoVote = JaagaDemoVote || {};
     className: 'col-md-offset-2 col-md-8',
     template: _.template( $('#memberDeliverableView').html() ),
 
+    events: {
+      'click #openVoteButton': 'openVoting',
+      'click #closeVoteButton': 'closeVoting',
+      'click #voteUp': 'voteUp',
+      'click #voteDown': 'voteDown',
+      'click #completeDeliverableButton': 'completeDeliverable',
+    },
+
+    initialize: function() {
+      
+    },
+
     render: function() {
       var html = this.template({
         deliverable: this.model
       });
       this.$el.html(html);
       return this;
-    }
+    },
+
+    // open voting. only for admins
+    openVoting: function(e) {
+      e.preventDefault();
+      this.model.set('votingopen', true);
+      this.model.save({
+        'votingopen': true
+      }, {
+        success: function() {
+          window.location.reload();
+        }
+      });
+    },
+
+    // close voting. only for admins
+    closeVoting: function(e) {
+      e.preventDefault();
+      this.model.set('votingopen', false);
+      this.model.save({
+        'votingopen': false
+      }, {
+        success: function() {
+          window.location.reload();
+        }
+      });;
+    },
+
+    // mark deliverable as completed. only for admins
+    completeDeliverable: function(e) {
+      e.preventDefault();
+      this.model.set('delivered', true);
+      this.model.save({
+        'delivered': true
+      }, {
+        success: function() {
+          window.location.reload();
+        }
+      });
+    },    
+
+    // voting available for all users
+    voteUp: function(e) {
+      e.preventDefault();
+      J.Collections.UserVotes.create({
+        deliverable: this.model.get('_id'),
+        vote: true,
+        // Dont worry about this. API will make sure that
+        // only the logged in user info will be saved.
+        // This is for quick client side updation
+        user: J.User._id
+      });
+      window.location.reload();
+    },
+
+    voteDown: function(e) {
+      e.preventDefault();
+      J.Collections.UserVotes.create({
+        deliverable: this.model.get('_id'),
+        vote: false,
+        // Dont worry about this. API will make sure that
+        // only the logged in user info will be saved.
+        // This is for quick client side updation
+        user: J.User._id
+      });
+      window.location.reload();
+    }    
 
   });
 
