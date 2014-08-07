@@ -9,24 +9,35 @@ block navLinks
   if user.isAdmin
     li
       a(href="#/app/admin/users")
-        span.glyphicon.glyphicon-user
+        span.fa.fa-user
         |  User Management
 
   li
+    a(href="#")
+      span.fa.fa-android
+      |  Android App
+
+  li
     a(href="/logout")
-      span.glyphicon.glyphicon-log-out
+      span.fa.fa-sign-out
       |  Logout
 
 block content
+  div.row#quoteRow
+    divl.col-md-offset-4.col-md-4
+      div.alert.alert-info#quoteArea
+        | If you want to know your future, just look at what you are doing now. Your present actions are the ones that shape your future, Gautama Buddha
+
   div.row
     div.col-md-12
       span.pull-right Howdy 
         = user.name
-        |! 
-        //img.img-circle(src=user.google.picture + "?sz=30")
+        |!   
+        img.img-circle(src=user.google.picture + "?sz=30")
+
   div.row#appContainer
-    div.col-md-12
-      h5 Loading...
+    div.col-md-offset-5.col-md-6
+      <i class="fa fa-spinner fa-spin fa-5x"></i>
 
 block templates
   // templates related to admin only
@@ -48,6 +59,7 @@ block templates
         a(href!="#/app/admin/users/view/<%= typeof user.get('_id') === 'undefined' ? user.get('cid') : user.get('_id') %>")
           h3<%= index + 1 %>. <%= user.get('email') %>
         <%  }) %>
+    hr
 
   script#adminUserAddTemplate(type="text/template")
     h2 Add New User
@@ -66,6 +78,7 @@ block templates
     button.btn.btn-success#newUserEmailSaveButton(type="button")
       span.glyphicon.glyphicon-plus
       | Add
+    hr
 
   script#adminUserTemplate(type="text/template")
     h2 <%= user.get('email') %>
@@ -73,10 +86,11 @@ block templates
     a.btn.btn-lg.btn-danger#removeUserButton
       span.glyphicon.glyphicon-remove
       |  Remove this user
+    hr
 
   // templates for all users
   script#userDashboardTemplate(type="text/template")
-    div.col-md-12
+    div.col-md-12.tile
       h2 Your Upcoming Deliverables
       hr
       div.alert.alert-info(style!="<%= deliverables.length === 0 ? 'display:block' : 'display:none' %>")
@@ -92,7 +106,7 @@ block templates
           h3<%= index + 1 %>. <%= deliverable.get('title') %>
         <%  }) %>
         hr
-    div.col-md-12
+    div.col-md-12.tile
       h2 Jaaga Family
       hr
       div.alert.alert-info(style!="<%= members.length === 0 ? 'display:block' : 'display:none' %>")
@@ -101,7 +115,8 @@ block templates
       div.col-md-12
         <% _.each(members, function(member, index){ %>
         a(href!="#/app/user/family/view/<%= typeof member.get('_id') === 'undefined' ? member.get('cid') : member.get('_id') %>")
-          h3<%= index + 1 %>. <%= member.get('name') %>
+          h3<%= index + 1 %>. <%= member.get('name') %> 
+            img.img-circle(src!='<%= member.get(\'google\').picture + "?sz=30" %>')
         small
           <%= member.get('deliverables').length %> Deliverable<%= member.get('deliverables').length === 1 ? '' : 's' %>, <%= JaagaDemoVote.Collections.Family.getMemberDeliverableCount(member.get('_id')) %> Delivered.
         hr
@@ -127,11 +142,11 @@ block templates
       span.glyphicon.glyphicon-plus
       |  Create
 
+    hr
+
   script#userEditDeliverableTemplate(type="text/template")
     h2 Editing "<%= deliverable.get('title') %>"
     hr
-    small.pull-right
-      a.text-muted(href="#/app/dashboard") Back to Dashboard
     div#validationError.alert.alert-danger(style="display:none")
       strong Oh! Oh!:  
       | I need a title and description!
@@ -152,9 +167,13 @@ block templates
       span.glyphicon.glyphicon-remove
       |  Remove this sucker
 
+    hr
+
   script#memberView(type="text/template")
     h2 <%= member.get('name') %>
     hr
+    small.pull-right
+      a.text-muted(href="#/app/dashboard") Back to Dashboard
     div.col-md-offset-1.col-md-9
       h3 Upcoming Deliverables
       hr
@@ -176,6 +195,8 @@ block templates
       a(href!="#/app/user/family/deliverable/view/<%= d._id %>")
         h4 <%= index + 1 %>. <%= d.title %>
       <%  }); %>
+    div.col-md-12
+      hr
 
   script#memberDeliverableView(type="text/template")
     h2 <%= deliverable.get('title') %>
@@ -183,8 +204,11 @@ block templates
       small
         span.text-muted
           <%= deliverable.get('delivered') === true ? 'I have delivered the project on ,' : 'I haven\'t delivered the project yet, ' %>
-          <%= deliverable.get('user').name %>
+          <%= deliverable.get('user').name %>   
+          img.img-circle(src!='<%= JaagaDemoVote.User.google.picture + "?sz=30" %>')
     hr
+    small.pull-right
+      a.text-muted(href="#/app/dashboard") Back to Dashboard
     p
     div.col-md-offset-2.col-md-8
       div.col-md-8
@@ -207,7 +231,7 @@ block templates
         hr
         div.alert.alert-info
           strong Heyo Admin! 
-          | You can make voting for this deliverable open or closed using the button below!
+          | You can do a lot of serious stuff using the buttons below!
         div.col-md-4
           a(href="#")#openVoteButton.btn.btn-xs.btn-info
             span.glyphicon.glyphicon-ok
@@ -236,6 +260,9 @@ block templates
           a(href="#")#voteDown.btn.btn-lg.btn-danger
             span.glyphicon.glyphicon-thumbs-down
             |  Hate It!
+
+    div.col-md-12
+      hr
 
 
 block appscripts

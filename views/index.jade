@@ -1,14 +1,30 @@
 extends layout
 
+block navLinks
+  li
+    a(href="#")
+      span.fa.fa-android
+      |  Android App
+
+  li
+    a(href="/auth/login/google")
+      span.fa.fa-sign-in
+      |  Google Signin
+
 block content
   div.row
-    div.col-md-12
-      h1 Welcome to Node Express Mongoose Boilerplate
-      p Login with anyone of the following -
-      ul
-        li 
-          a(href="/auth/login/google") Google
-        li 
-          a(href="/auth/login/facebook") Facebook
-        li 
-          a(href="/auth/login/twitter") Twitter
+    div.col-md-offset-2.col-md-8.tile
+      h1 Welcome to Jaaga DemoVote!
+        br
+        small Keep track of your projects and Vote on other projects.
+      hr
+      div.col-md-12
+        h3 Specially crafted for Jaaga people! If you want to use this, join 
+          a(href="http://jaaga.in") us.
+      div.col-md-12
+        hr
+        p.pull-right
+          | Built with 
+          span.fa.fa-heart 
+          |   in 
+          a(target="_blank", href="https://www.zenpics.net/album/5358a16533cb3aae749d9774") Banjarpalya.

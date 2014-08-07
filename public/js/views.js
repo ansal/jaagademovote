@@ -18,7 +18,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.AdminUsersView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#adminUsersTemplate').html() ),
 
     render: function() {
@@ -35,7 +35,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.AdminUserAddView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#adminUserAddTemplate').html() ),
 
     events: {
@@ -72,7 +72,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.AdminUserView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#adminUserTemplate').html() ),
 
     events: {
@@ -105,7 +105,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.UserDashboardView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#userDashboardTemplate').html() ),
 
     render: function() {
@@ -123,7 +123,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.UserAddDeliverableView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#userAddDeliverableTemplate').html() ),
 
     events: {
@@ -163,7 +163,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.UserEditDeliverableView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#userEditDeliverableTemplate').html() ),
 
     events: {
@@ -214,7 +214,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.MemberView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#memberView').html() ),
 
     render: function() {
@@ -231,7 +231,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
   J.Views.MemberDeliverableView = Backbone.View.extend({
 
     tagName: 'div',
-    className: 'col-md-offset-2 col-md-8',
+    className: 'col-md-offset-2 col-md-8 tile',
     template: _.template( $('#memberDeliverableView').html() ),
 
     events: {

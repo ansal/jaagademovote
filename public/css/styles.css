@@ -1,0 +1,10 @@
+/* Custom styles for Jaaga Demo Vote App */
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: url('/img/bg.png');
+}
+
+.tile {
+  background: white;
+}
