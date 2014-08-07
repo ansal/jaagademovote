@@ -43,6 +43,6 @@ var JaagaDemoVote = JaagaDemoVote || {};
     $('#quoteRow').hide();
     $('#quoteArea').text( '"' + J.Quotes[index] + '"' );
     $('#quoteRow').show('fast');
-  }, 10000);
+  }, 20000);
 
 })();

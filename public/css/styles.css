@@ -8,3 +8,7 @@ body {
 .tile {
   background: white;
 }
+
+#mainContainer {
+  margin-top: 5%;
+}

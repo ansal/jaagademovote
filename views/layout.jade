@@ -9,7 +9,7 @@ html
   body
 
     // navigation bar
-    nav.navbar.navbar-default(role="navigation")
+    nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
       div.container-fluid
         div.navbar-header
           button.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbar-collapse-links-1")
@@ -24,7 +24,7 @@ html
             block navLinks
 
     // app body
-    div.container-fluid
+    div.container-fluid#mainContainer
 
       block content
 
