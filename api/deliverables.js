@@ -1,5 +1,8 @@
 // RESTful api for deliverable model
 
+var googleIdToken = require('google-id-token');
+
+var getGoogleCerts = require('../auth.js').getGoogleCerts;
 var restify = require('./express-restify-mongoose');
 var Deliverable = require('../models/deliverables.js').Deliverable;
 
@@ -67,12 +70,45 @@ module.exports = function(app, config) {
     },
 
     contextFilter: function(model, req, callback) {
+      
       if(req.user) {
+        
         callback(model);
+        return;
+
       } else {
-        callback(model.find({
-          isPublic: true
-        }));
+        
+        // check whether the request is coming from android
+        if(typeof req.headers.authorization === 'undefined') {
+
+          callback(model.find({
+            isPublic: true
+          }));
+          return;
+
+        } else {
+
+          // this is an android call, parse it
+          var parser = new googleIdToken({ getKeys: getGoogleCerts });
+
+          parser.decode(req.headers.authorization, function(err, token) {
+            if(err) {
+                console.log("Error: " + err);
+                callback(model.find({
+                  isPublic: true
+                }));
+                return;
+            }
+
+            // this is a valid user
+            callback(model);            
+            return;
+          });
+
+        }
+
+        return;
+
       }
     }
 
