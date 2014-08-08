@@ -34,15 +34,13 @@ var JaagaDemoVote = JaagaDemoVote || {};
     'Suffering has been stronger than all other teaching, and has taught me to understand what your heart used to be. I have been bent and broken, but - I hope - into a better shape, Charles Dickens',
     '“And O there are days in this life, worth life and worth death, Charles Dickens'
   ];
-  // show the quotes randomly
-  setInterval(function() {
-    function randomInt(min, max) {
-        return Math.floor( Math.random()*(max-min+1) + min );
-    }
-    var index = randomInt(0, J.Quotes.length - 1);
-    $('#quoteRow').hide();
-    $('#quoteArea').text( '"' + J.Quotes[index] + '"' );
-    $('#quoteRow').show('fast');
-  }, 20000);
+  // show the quotes
+  function randomInt(min, max) {
+      return Math.floor( Math.random()*(max-min+1) + min );
+  }
+  var index = randomInt(0, J.Quotes.length - 1);
+  $('#quoteRow').hide();
+  $('#quoteArea').text( '"' + J.Quotes[index] + '"' );
+  $('#quoteRow').show('fast');
 
 })();

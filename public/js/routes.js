@@ -13,6 +13,9 @@ var JaagaDemoVote = JaagaDemoVote || {};
   // html rendered by backbone views are put into this container
   var $container = $('#appContainer');
 
+  // spinner template
+  var spinnerHTML = $('#spinnerTemplate').html();
+
   J.AppRouter = Backbone.Router.extend({
 
     routes: {
@@ -32,6 +35,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     adminUsers: function() {
+      $container.html(spinnerHTML);
       J.Collections.AllowedUsers.fetch({
           success: function() {
             J.AppState.currentView = new J.Views.AdminUsersView;
@@ -45,6 +49,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     adminUser: function(id) {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -70,6 +75,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     adminUsersAdd: function() {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -78,6 +84,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     dashboard: function() {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -108,6 +115,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     userAddDeliverable: function() {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -116,6 +124,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     userEditDeliverable: function(id) {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -141,6 +150,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     memberView: function(id) {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
@@ -166,6 +176,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     },
 
     memberDeliverableView: function(id) {
+      $container.html(spinnerHTML);
       if(J.AppState.currentView) {
         J.AppState.currentView.remove();
       }
