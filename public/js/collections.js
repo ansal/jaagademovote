@@ -16,6 +16,9 @@ var JaagaDemoVote = JaagaDemoVote || {};
   // Only admin is allowed to access this
   var AllowedUsers = Backbone.Collection.extend({
     model: J.Models.AllowedUser,
+    comparator: function( collection ){
+      return( collection.get( 'email' ) );
+    },
     url: '/api/v1/allowedusers'
   });
   J.Collections.AllowedUsers = new AllowedUsers;
@@ -33,6 +36,9 @@ var JaagaDemoVote = JaagaDemoVote || {};
   }
   var Deliverables = Backbone.Collection.extend({
     model: J.Models.Deliverable,
+    comparator: function( collection ){
+      return( collection.get( 'name' ) );
+    },
     url: '/api/v1/deliverables',
     sync: deliverablesSetUrls,
 
