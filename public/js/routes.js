@@ -36,7 +36,11 @@ var JaagaDemoVote = JaagaDemoVote || {};
 
     adminUsers: function() {
       $container.html(spinnerHTML);
-      J.Collections.AllowedUsers.fetch({
+      if(J.Collections.AllowedUsers.length !== 0) {
+        J.AppState.currentView = new J.Views.AdminUsersView;
+        $container.html( J.AppState.currentView.render().$el );
+      } else {
+        J.Collections.AllowedUsers.fetch({
           success: function() {
             J.AppState.currentView = new J.Views.AdminUsersView;
             $container.html( J.AppState.currentView.render().$el );
@@ -45,7 +49,8 @@ var JaagaDemoVote = JaagaDemoVote || {};
             alert('Failed to load data. Please see log for details');
             console.log(err);
           }
-      });
+        });
+      }
     },
 
     adminUser: function(id) {
@@ -92,26 +97,31 @@ var JaagaDemoVote = JaagaDemoVote || {};
       // This is an antipattern as described in Backbone FAQ
       // But for the time being Models are not bootstrapped by
       // the backend.
-      J.Collections.Deliverables.fetch({
-        success: function() {
-          // Since dashboard also shows family members,
-          // we have to show them too
-          J.Collections.Family.fetch({
-            success: function() {
-              J.AppState.currentView = new J.Views.UserDashboardView;
-              $container.html( J.AppState.currentView.render().$el );
-            },
-            error: function() {
-              alert('Failed to load data. Please see log for details');
-              console.log(err);
-            }
-          });
-        },
-        error: function(err) {
-          alert('Failed to load data. Please see log for details');
-          console.log(err);
-        }
-      });
+      if(J.Collections.Deliverables.length !== 0) {
+        J.AppState.currentView = new J.Views.UserDashboardView;
+        $container.html( J.AppState.currentView.render().$el );
+      } else {
+        J.Collections.Deliverables.fetch({
+          success: function() {
+            // Since dashboard also shows family members,
+            // we have to show them too
+            J.Collections.Family.fetch({
+              success: function() {
+                J.AppState.currentView = new J.Views.UserDashboardView;
+                $container.html( J.AppState.currentView.render().$el );
+              },
+              error: function() {
+                alert('Failed to load data. Please see log for details');
+                console.log(err);
+              }
+            });
+          },
+          error: function(err) {
+            alert('Failed to load data. Please see log for details');
+            console.log(err);
+          }
+        });
+      }
     },
 
     userAddDeliverable: function() {
