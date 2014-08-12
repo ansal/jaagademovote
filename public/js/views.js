@@ -299,7 +299,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
     // voting available for all users
     voteUp: function(e) {
       e.preventDefault();
-      $(e.target).attr('disabled', true);
+      $('.votingButton').attr('disabled', true);
       J.Collections.UserVotes.create({
         deliverable: this.model.get('_id'),
         vote: true,
@@ -307,12 +307,21 @@ var JaagaDemoVote = JaagaDemoVote || {};
         // only the logged in user info will be saved.
         // This is for quick client side updation
         user: J.User._id
+      }, {
+        wait: true,
+        success: function() {
+          window.location.reload();
+        },
+        error: function() {
+          $('.votingButton').attr('disabled', false);
+          window.alert('Unable to process this request!');
+        }
       });
-      window.location.reload();
     },
 
     voteDown: function(e) {
       e.preventDefault();
+      $('.votingButton').attr('disabled', true);
       $(e.target).attr('disabled', true);
       J.Collections.UserVotes.create({
         deliverable: this.model.get('_id'),
@@ -321,8 +330,16 @@ var JaagaDemoVote = JaagaDemoVote || {};
         // only the logged in user info will be saved.
         // This is for quick client side updation
         user: J.User._id
+      }, {
+        wait: true,
+        success: function() {
+          window.location.reload();
+        },
+        error: function() {
+          $('.votingButton').attr('disabled', false);
+          window.alert('Unable to process this request!');
+        }
       });
-      window.location.reload();
     }    
 
   });
