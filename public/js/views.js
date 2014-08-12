@@ -155,7 +155,7 @@ var JaagaDemoVote = JaagaDemoVote || {};
         title: title,
         description: description
       }, {
-        wait: true,
+        wait: false,
         success: function() {
           window.location.href = '#/app/dashboard';
         },
