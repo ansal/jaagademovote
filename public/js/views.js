@@ -139,21 +139,31 @@ var JaagaDemoVote = JaagaDemoVote || {};
 
     saveNewDeliverable: function(e) {
       e.preventDefault();
-
+      $(e.target).attr('disabled', true);
+      $(e.target).html('Please wait...');
       var title = $('#deliverableTitle').val(),
           description = $('#deliverableDescription').val();
 
       if(!title || !description) {
         $('#validationError').show('fast');
+        $(e.target).attr('disabled', false);
+        $(e.target).html('Create');
         return;
       }
 
       J.Collections.Deliverables.create({
         title: title,
         description: description
+      }, {
+        wait: true,
+        success: function() {
+          window.location.href = '#/app/dashboard';
+        },
+        error: function() {
+          $(e.target).attr('disabled', false);
+          $(e.target).html('Create');
+        }
       });
-
-      window.location.href = '#/app/dashboard';
 
     }
 
